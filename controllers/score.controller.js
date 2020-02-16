@@ -1,18 +1,16 @@
-const EventModel = require('../models/event.model');
+const ScoreModel = require('../models/score.model');
 
 module.exports = {
     async create(request, h) {
         try {
             const { payload } = request;
-            const { number, date, matchups } = payload;
+            const { playerId } = payload;
 
-            const eventResult = await EventModel.create({
-                number,
-                date,
-                matchups
+            const scoreResult = await ScoreModel.create({
+                player: playerId
             });
 
-            return h.response(eventResult);
+            return h.response(scoreResult);
         } catch (error) {
             console.log(error)
             return h.response(error).code(500);

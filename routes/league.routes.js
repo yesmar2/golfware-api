@@ -1,23 +1,15 @@
-const EventController = require('../controllers/event.controller');
+const LeagueController = require('../controllers/league.controller');
 const Joi = require("joi");
 
 module.exports = [
     // TODO: creating events
     {
-        path: "/api/event",
+        path: "/api/league",
         method: "POST",
         options: {
             validate: {
                 payload: {
-                    number: Joi.number().required(),
-                    date: Joi.date().required(),
-                    matchups: Joi.array().items(
-                        Joi.object({
-                            number: Joi.number().required(),
-                            teamOne: Joi.string().required(),
-                            teamTwo: Joi.string().required()
-                        })
-                    ).required()
+                    name: Joi.string().required(),
                 },
                 failAction: (request, h, error) => {
                     return error.isJoi
@@ -26,23 +18,23 @@ module.exports = [
                 }
             }
         },
-        handler: EventController.create
+        handler: LeagueController.create
     },
     {
-        path: "/api/events",
+        path: "/api/leagues",
         method: "GET",
-        handler: EventController.find
+        handler: LeagueController.find
     },
-    {
-        path: "/api/event/{id}",
-        method: "GET",
-        handler: EventController.findOne
-    },
-    {
-        path: "/api/event/{id}",
-        method: "DELETE",
-        handler: EventController.delete
-    }
+    // {
+    //     path: "/api/event/{id}",
+    //     method: "GET",
+    //     handler: EventController.findOne
+    // },
+    // {
+    //     path: "/api/event/{id}",
+    //     method: "DELETE",
+    //     handler: EventController.delete
+    // }
     // TODO: update events
     // {
     //     path: '/api/event/{id}',

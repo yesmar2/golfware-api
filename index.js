@@ -1,8 +1,11 @@
 const Hapi = require("hapi");
 const Mongoose = require("mongoose");
-const playerRoutes = require('./routes/player.routes');
-const teamRoutes = require('./routes/team.routes');
+const leagueRoutes = require('./routes/league.routes');
 const eventRoutes = require('./routes/event.routes');
+const teamRoutes = require('./routes/team.routes');
+const playerRoutes = require('./routes/player.routes');
+const scorecardRoutes = require('./routes/scorecard.routes');
+const scoreRoutes = require('./routes/score.routes');
 
 const server = new Hapi.Server({ "host": "localhost", "port": 3001 });
 
@@ -21,8 +24,11 @@ server.route({
     }
 });
 
-server.route(playerRoutes);
-server.route(teamRoutes);
+server.route(leagueRoutes);
 server.route(eventRoutes);
+server.route(teamRoutes);
+server.route(playerRoutes);
+server.route(scorecardRoutes);
+server.route(scoreRoutes);
 
 server.start();

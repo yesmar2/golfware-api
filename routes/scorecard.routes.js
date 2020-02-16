@@ -1,23 +1,18 @@
-const EventController = require('../controllers/event.controller');
+const ScorecardController = require('../controllers/scorecard.controller');
 const Joi = require("joi");
 
 module.exports = [
     // TODO: creating events
     {
-        path: "/api/event",
+        path: "/api/scorecard",
         method: "POST",
         options: {
             validate: {
                 payload: {
-                    number: Joi.number().required(),
-                    date: Joi.date().required(),
-                    matchups: Joi.array().items(
-                        Joi.object({
-                            number: Joi.number().required(),
-                            teamOne: Joi.string().required(),
-                            teamTwo: Joi.string().required()
-                        })
-                    ).required()
+                    playerOne: Joi.string().required(),
+                    playerTwo: Joi.string(),
+                    playerThree: Joi.string(),
+                    playerFour: Joi.string(),
                 },
                 failAction: (request, h, error) => {
                     return error.isJoi
@@ -26,23 +21,23 @@ module.exports = [
                 }
             }
         },
-        handler: EventController.create
+        handler: ScorecardController.create
     },
-    {
-        path: "/api/events",
-        method: "GET",
-        handler: EventController.find
-    },
-    {
-        path: "/api/event/{id}",
-        method: "GET",
-        handler: EventController.findOne
-    },
-    {
-        path: "/api/event/{id}",
-        method: "DELETE",
-        handler: EventController.delete
-    }
+    // {
+    //     path: "/api/events",
+    //     method: "GET",
+    //     handler: EventController.find
+    // },
+    // {
+    //     path: "/api/event/{id}",
+    //     method: "GET",
+    //     handler: EventController.findOne
+    // },
+    // {
+    //     path: "/api/event/{id}",
+    //     method: "DELETE",
+    //     handler: EventController.delete
+    // }
     // TODO: update events
     // {
     //     path: '/api/event/{id}',
