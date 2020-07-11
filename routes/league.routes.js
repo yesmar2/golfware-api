@@ -10,6 +10,7 @@ module.exports = [
             validate: {
                 payload: {
                     name: Joi.string().required(),
+                    admins: Joi.array().items(Joi.string()).required()
                 },
                 failAction: (request, h, error) => {
                     return error.isJoi
@@ -25,6 +26,11 @@ module.exports = [
         method: "GET",
         handler: LeagueController.find
     },
+    {
+        path: "/api/leagues/byFirebaseID/{firebaseID}",
+        method: "GET",
+        handler: LeagueController.findLeaguesByFirebaseId
+    },
     // {
     //     path: "/api/event/{id}",
     //     method: "GET",
@@ -35,20 +41,21 @@ module.exports = [
     //     method: "DELETE",
     //     handler: EventController.delete
     // }
-    // TODO: update events
-    // {
-    //     path: '/api/event/{id}',
-    //     method: 'PUT',
-    //     options: {
-    //         validate: {
-    //             payload: {
-    //                 number: Joi.string().optional()
-    //             },
-    //             failAction: (request, h, error) => {
-    //                 return error.isJoi ? h.response(error.details[0]).takeover() : h.response(error).takeover();
-    //             }
-    //         }
-    //     },
-    //     handler: EventController.update
-    // }
+    {
+        path: '/api/league/{leagueId}/season',
+        method: 'POST',
+        options: {
+            validate: {
+                payload: {
+                    season: Joi.object({
+                        year: Joi.number().required(),
+                    })
+                },
+                failAction: (request, h, error) => {
+                    return error.isJoi ? h.response(error.details[0]).takeover() : h.response(error).takeover();
+                }
+            }
+        },
+        handler: LeagueController.addSeason
+    },
 ];

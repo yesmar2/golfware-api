@@ -9,14 +9,23 @@ module.exports = {
 
             return h.response(leagueResult);
         } catch (error) {
-            console.log(error)
             return h.response(error).code(500);
         }
     },
     async find(request, h) {
         try {
-            var league = await LeagueModel.find().exec();
-            return h.response(league);
+            var leagues = await LeagueModel.find().populate("season").exec();
+            return h.response(leagues);
+        } catch (error) {
+            return h.response(error).code(500);
+        }
+    },
+    async findLeaguesByFirebaseId(request, h) {
+        const { firebaseID } = request.params;
+
+        try {
+            var leagues = await LeagueModel.find({ admins: [ firebaseID ] }).exec();
+            return h.response(leagues);
         } catch (error) {
             return h.response(error).code(500);
         }
@@ -29,14 +38,24 @@ module.exports = {
     //         return h.response(error).code(500);
     //     }
     // },
-    // async update(request, h) {
-    //     try {
-    //         var result = await EventModel.findByIdAndUpdate(request.params.id, request.payload, { new: true });
-    //         return h.response(result);
-    //     } catch (error) {
-    //         return h.response(error).code(500);
-    //     }
-    // },
+    async addSeason(request, h) {
+        try {
+            const { payload, params } = request;
+            const { leagueId } = params;
+            const { season } = payload;
+
+            const league = await LeagueModel.findById(leagueId).exec();
+        
+            league.seasons.push(season)
+            
+            const leagueResult = await league.save();
+
+            return h.response(leagueResult);
+        } catch (error) {
+            console.log("error", error);
+            return h.response(error).code(500);
+        }
+    },
     // async delete(request, h) {
     //     try {
     //         var result = await EventModel.findByIdAndDelete(request.params.id);

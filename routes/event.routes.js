@@ -2,7 +2,6 @@ const EventController = require('../controllers/event.controller');
 const Joi = require("joi");
 
 module.exports = [
-    // TODO: creating events
     {
         path: "/api/event",
         method: "POST",
@@ -11,13 +10,15 @@ module.exports = [
                 payload: {
                     number: Joi.number().required(),
                     date: Joi.date().required(),
+                    description: Joi.string().required(),
                     matchups: Joi.array().items(
                         Joi.object({
                             number: Joi.number().required(),
-                            teamOne: Joi.string().required(),
-                            teamTwo: Joi.string().required()
+                            teamOneNumber: Joi.number().required(),
+                            teamTwoNumber: Joi.number().required()
                         })
-                    ).required()
+                    ).required(),
+                    seasonId: Joi.string().required(),
                 },
                 failAction: (request, h, error) => {
                     return error.isJoi
@@ -42,7 +43,12 @@ module.exports = [
         path: "/api/event/{id}",
         method: "DELETE",
         handler: EventController.delete
-    }
+    },
+    {
+        path: "/api/events/{seasonId}",
+        method: "GET",
+        handler: EventController.findEventsBySeasonId
+    },
     // TODO: update events
     // {
     //     path: '/api/event/{id}',

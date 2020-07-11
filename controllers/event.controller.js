@@ -1,20 +1,22 @@
 const EventModel = require('../models/event.model');
+const SeasonModel = require('../models/season.model');
 
 module.exports = {
     async create(request, h) {
         try {
-            const { payload } = request;
-            const { number, date, matchups } = payload;
+            const { payload, params } = request;
+            const { number, date, description, matchups, seasonId } = payload;
 
             const eventResult = await EventModel.create({
                 number,
                 date,
-                matchups
+                matchups,
+                description,
+                seasonId
             });
 
             return h.response(eventResult);
         } catch (error) {
-            console.log(error)
             return h.response(error).code(500);
         }
     },
@@ -49,5 +51,14 @@ module.exports = {
         } catch (error) {
             return h.response(error).code(500);
         }
-    }
+    },
+    async findEventsBySeasonId(request, h) {
+        try {
+            const { seasonId } = request.params;
+            var events = await EventModel.find({ seasonId }).exec();
+            return h.response(events);
+        } catch (error) {
+            return h.response(error).code(500);
+        }
+    },
 };

@@ -1,6 +1,8 @@
 const Hapi = require("hapi");
 const Mongoose = require("mongoose");
+const adminRoutes = require('./routes/admin.routes');
 const leagueRoutes = require('./routes/league.routes');
+const seasonRoutes = require('./routes/season.routes');
 const eventRoutes = require('./routes/event.routes');
 const teamRoutes = require('./routes/team.routes');
 const playerRoutes = require('./routes/player.routes');
@@ -24,7 +26,9 @@ server.route({
     }
 });
 
+server.route(adminRoutes);
 server.route(leagueRoutes);
+server.route(seasonRoutes);
 server.route(eventRoutes);
 server.route(teamRoutes);
 server.route(playerRoutes);

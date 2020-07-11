@@ -6,22 +6,18 @@ const MatchupSchema = Schema({
         type: Number,
         required: true
     },
-    teamOne: {
-        type: Schema.Types.ObjectId,
-        ref: 'Team'
+    teamOneNumber: {
+        type: Number,
+        required: true
     },
-    teamTwo: {
-        type: Schema.Types.ObjectId,
-        ref: 'Team'
+    teamTwoNumber: {
+        type: Number,
+        required: true
     },
-    scorecardOne: {
+    scorecards: [{
         type: Schema.Types.ObjectId,
         ref: 'Scorecard'
-    },
-    scorecardTwo: {
-        type: Schema.Types.ObjectId,
-        ref: 'Scorecard'
-    }
+    }]
 });
 
 const EventSchema = Schema({
@@ -33,7 +29,15 @@ const EventSchema = Schema({
         type: Date,
         requred: true
     },
-    matchups: [ MatchupSchema ]
+    description: {
+        type: String,
+        required: true
+    }, 
+    matchups: [ MatchupSchema ],
+    seasonId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Season'
+    }
 });
 
 module.exports = mongoose.model('Event', EventSchema);
