@@ -1,11 +1,31 @@
 const LeagueModel = require('../models/league.model');
+const SeasonModel = require('../models/season.model');
 
 module.exports = {
     async create(request, h) {
         try {
             const { payload } = request;
+            const { leagueName, admin, golfCourseId } = payload;
 
-            const leagueResult = await LeagueModel.create(payload);
+            const season = {
+                golfCourses: [golfCourseId],
+            };
+
+            const seasonResult = await SeasonModel.create(season);
+            const { _id: seasonId } = seasonResult;
+
+            const league = { 
+                leagueName,
+                admins: [admin],
+                seasons: [seasonId],
+                activeSeasonId: seasonId,
+            };
+
+            const leagueResult = await LeagueModel.create(league);
+            const { _id: leagueId } = leagueResult;
+            
+            seasonResult.league = leagueId;
+            await seasonResult.save();
 
             return h.response(leagueResult);
         } catch (error) {

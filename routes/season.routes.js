@@ -9,6 +9,7 @@ module.exports = [
             validate: {
                 payload: {
                     year: Joi.number().required(),
+                    leagueId: Joi.string().required(),
                 },
                 failAction: (request, h, error) => {
                     return error.isJoi
@@ -19,11 +20,11 @@ module.exports = [
         },
         handler: SeasonController.create
     },
-    // {
-    //     path: "/api/event/{id}",
-    //     method: "GET",
-    //     handler: EventController.findOne
-    // },
+    {
+        path: "/api/season/{seasonId}",
+        method: "GET",
+        handler: SeasonController.findOne
+    },
     // {
     //     path: "/api/event/{id}",
     //     method: "DELETE",

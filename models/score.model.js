@@ -6,7 +6,7 @@ const ScoreSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: 'Player'
     },
-    scores: [{
+    holes: [{
         holeNumber: {
             type: Number
         },

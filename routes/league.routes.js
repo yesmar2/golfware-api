@@ -2,15 +2,16 @@ const LeagueController = require('../controllers/league.controller');
 const Joi = require("joi");
 
 module.exports = [
-    // TODO: creating events
     {
         path: "/api/league",
         method: "POST",
         options: {
             validate: {
                 payload: {
-                    name: Joi.string().required(),
-                    admins: Joi.array().items(Joi.string()).required()
+                    leagueName: Joi.string().required(),
+                    admin: Joi.string().required(),
+                    golfCourseId: Joi.string().required(),
+                    numberOfHoles: Joi.number().required(),
                 },
                 failAction: (request, h, error) => {
                     return error.isJoi
@@ -41,21 +42,4 @@ module.exports = [
     //     method: "DELETE",
     //     handler: EventController.delete
     // }
-    {
-        path: '/api/league/{leagueId}/season',
-        method: 'POST',
-        options: {
-            validate: {
-                payload: {
-                    season: Joi.object({
-                        year: Joi.number().required(),
-                    })
-                },
-                failAction: (request, h, error) => {
-                    return error.isJoi ? h.response(error.details[0]).takeover() : h.response(error).takeover();
-                }
-            }
-        },
-        handler: LeagueController.addSeason
-    },
 ];

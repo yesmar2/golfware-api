@@ -8,7 +8,7 @@ module.exports = {
             const { number, date, description, matchups, seasonId } = payload;
 
             const eventResult = await EventModel.create({
-                number,
+                number,     
                 date,
                 matchups,
                 description,
